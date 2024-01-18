@@ -15,30 +15,30 @@ from kivymd import fonts_path
 fonts = [
     {
         "name": "Roboto",
-        "fn_regular": fonts_path + "Roboto-Regular.ttf",
-        "fn_bold": fonts_path + "Roboto-Bold.ttf",
-        "fn_italic": fonts_path + "Roboto-Italic.ttf",
-        "fn_bolditalic": fonts_path + "Roboto-BoldItalic.ttf",
+        "fn_regular": fonts_path + "OPPOSans20-Regular.ttf",
+        "fn_bold": fonts_path + "OPPOSans20-Bold.ttf",
+        "fn_italic": fonts_path + "OPPOSans20-Regular.ttf",
+        "fn_bolditalic": fonts_path + "OPPOSans20-Bold.ttf",
     },
     {
         "name": "RobotoThin",
-        "fn_regular": fonts_path + "Roboto-Thin.ttf",
-        "fn_italic": fonts_path + "Roboto-ThinItalic.ttf",
+        "fn_regular": fonts_path + "OPPOSans20-Light.ttf",
+        "fn_italic": fonts_path + "OPPOSans20-Light.ttf",
     },
     {
         "name": "RobotoLight",
-        "fn_regular": fonts_path + "Roboto-Light.ttf",
-        "fn_italic": fonts_path + "Roboto-LightItalic.ttf",
+        "fn_regular": fonts_path + "OPPOSans20-Light.ttf",
+        "fn_italic": fonts_path + "OPPOSans20-Light.ttf",
     },
     {
         "name": "RobotoMedium",
-        "fn_regular": fonts_path + "Roboto-Medium.ttf",
-        "fn_italic": fonts_path + "Roboto-MediumItalic.ttf",
+        "fn_regular": fonts_path + "OPPOSans20-Medium.ttf",
+        "fn_italic": fonts_path + "OPPOSans20-Medium.ttf",
     },
     {
         "name": "RobotoBlack",
-        "fn_regular": fonts_path + "Roboto-Black.ttf",
-        "fn_italic": fonts_path + "Roboto-BlackItalic.ttf",
+        "fn_regular": fonts_path + "OPPOSans20-Regular.ttf",
+        "fn_italic": fonts_path + "OPPOSans20-Regular.ttf",
     },
     {
         "name": "Icons",
