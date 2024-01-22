@@ -22,6 +22,7 @@ The main application class inherited from the :class:`~kivymd.app.MDApp` class
 has the :attr:`~kivymd.app.MDApp.theme_cls` attribute, with which you control
 the material properties of your application.
 """
+
 import os.path
 from timeit import default_timer
 
@@ -38,6 +39,7 @@ from kivy.properties import (
     OptionProperty,
     StringProperty,
 )
+from kivy import platform
 from kivy.utils import get_color_from_hex, rgba, hex_colormap
 
 from kivymd.dynamic_color import DynamicColor
@@ -146,7 +148,7 @@ class ThemeManager(EventDispatcher, DynamicColor):
     and defaults to `None`.
     """
 
-    dynamic_color_quality = NumericProperty(10)
+    dynamic_color_quality = NumericProperty(1 if platform == "android" else 10)
     """
     The quality of the generated color scheme from the system wallpaper.
 
@@ -156,7 +158,7 @@ class ThemeManager(EventDispatcher, DynamicColor):
         generation time of the color scheme.
 
     :attr:`dynamic_color_quality` is an :class:`~kivy.properties.NumericProperty`
-    and defaults to `10`.
+    and defaults to `10` if platform is not Android else `1`.
     """
 
     dynamic_color = BooleanProperty(False)
