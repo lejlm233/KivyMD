@@ -355,7 +355,7 @@ from kivy.properties import (
 )
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
-
+from kivy.uix.image import AsyncImage
 from kivymd.uix.selectioncontrol import MDCheckbox
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
@@ -520,7 +520,10 @@ class MDListItemLeadingIcon(BaseListItemIcon):
     For more information, see in the :class:`~BaseListItemIcon`
     class documentation.
     """
-
+class MDListItemLeadingImage(AsyncImage):
+    """
+    Implements a class for leading image class.
+    """
 
 class MDListItemLeadingAvatar(
     ThemableBehavior, CircularRippleBehavior, ButtonBehavior, FitImage
@@ -582,7 +585,7 @@ class MDListItem(BaseListItem, BoxLayout):
             elif len(self.ids.text_container.children) > 3:
                 self._set_warnings(widget)
         elif isinstance(
-            widget, (MDListItemLeadingIcon, MDListItemLeadingAvatar)
+            widget, (MDListItemLeadingImage,MDListItemLeadingIcon, MDListItemLeadingAvatar)
         ):
             if not self.ids.leading_container.children:
                 widget._list_item = self
