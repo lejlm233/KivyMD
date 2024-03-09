@@ -130,6 +130,11 @@ with open(
 class _ScrollViewHardStop(DampedScrollEffect):
     def stop(self, val, t=None):
         return super().stop(val, t=0.01)
+        
+    def convert_overscroll(self,touch):
+        pass
+    def reset_scale(self, *arg):
+        pass
 
 
 class _ItemsBox(AnchorLayout):
