@@ -13,32 +13,39 @@ from kivy.metrics import sp
 from kivymd import fonts_path
 
 fonts = [
-    {
+       {
         "name": "OPPOSans",
         "fn_regular": fonts_path + "OPPOSans-Regular.ttf",
         "fn_bold": fonts_path + "OPPOSans-Bold.ttf",
         "fn_italic": fonts_path + "OPPOSans-Regular.ttf",
-        "fn_bolditalic": fonts_path + "OPPOSans20-Bold.ttf",
+        "fn_bolditalic": fonts_path + "OPPOSans-Bold.ttf",
     },
     {
-        "name": "OPPOSansThin",
-        "fn_regular": fonts_path + "OPPOSans20-Light.ttf",
-        "fn_italic": fonts_path + "OPPOSans20-Light.ttf",
+        "name": "Roboto",
+        "fn_regular": fonts_path + "Roboto-Regular.ttf",
+        "fn_bold": fonts_path + "Roboto-Bold.ttf",
+        "fn_italic": fonts_path + "Roboto-Italic.ttf",
+        "fn_bolditalic": fonts_path + "Roboto-BoldItalic.ttf",
     },
     {
-        "name": "OPPOSansLight",
-        "fn_regular": fonts_path + "OPPOSans20-Light.ttf",
-        "fn_italic": fonts_path + "OPPOSans20-Light.ttf",
+        "name": "RobotoThin",
+        "fn_regular": fonts_path + "Roboto-Thin.ttf",
+        "fn_italic": fonts_path + "Roboto-ThinItalic.ttf",
     },
     {
-        "name": "OPPOSansMedium",
-        "fn_regular": fonts_path + "OPPOSans-Medium.ttf",
-        "fn_italic": fonts_path + "OPPOSans-Medium.ttf",
+        "name": "RobotoLight",
+        "fn_regular": fonts_path + "Roboto-Light.ttf",
+        "fn_italic": fonts_path + "Roboto-LightItalic.ttf",
     },
     {
-        "name": "OPPOSansBlack",
-        "fn_regular": fonts_path + "OPPOSans-Regular.ttf",
-        "fn_italic": fonts_path + "OPPOSans-Regular.ttf",
+        "name": "RobotoMedium",
+        "fn_regular": fonts_path + "Roboto-Medium.ttf",
+        "fn_italic": fonts_path + "Roboto-MediumItalic.ttf",
+    },
+    {
+        "name": "RobotoBlack",
+        "fn_regular": fonts_path + "Roboto-Black.ttf",
+        "fn_italic": fonts_path + "Roboto-BlackItalic.ttf",
     },
     {
         "name": "Icons",
