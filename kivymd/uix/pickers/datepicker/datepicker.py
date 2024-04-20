@@ -692,7 +692,7 @@ class MDBaseDatePicker(ThemableBehavior, MotionDatePickerBehavior, BoxLayout):
     and defaults to `[0, 0, 0, 0.5]`.
     """
 
-    supporting_text = StringProperty("Select date")
+    supporting_text = StringProperty("选择日期，选择后将会转换成农历")
     """
     Supporting text.
 
@@ -800,7 +800,8 @@ class MDBaseDatePicker(ThemableBehavior, MotionDatePickerBehavior, BoxLayout):
         """Returns a string like  "Tue, Feb 2"."""
 
         def date_repr(date):
-            return date.strftime("%b").capitalize() + " " + str(date.day)
+            #return date.strftime("%b").capitalize() + " " + str(date.day)
+            return date.strftime("%m,%d")
 
         input_dates = (
             self._get_dates_from_fields()
@@ -892,7 +893,7 @@ class MDBaseDatePicker(ThemableBehavior, MotionDatePickerBehavior, BoxLayout):
             selected_dates = {selected_date}
         else:
             selected_dates = {self.min_date, self.max_date}
-
+        
         # The label text depends on the selected date or date range.
         self._update_date_label_text()
         month_end = date(year, month, calendar.monthrange(year, month)[1])
@@ -1600,9 +1601,29 @@ class MDModalDatePicker(CommonElevationBehavior, MDBaseDatePicker):
             year_selection_layout.disabled = True
 
     def _update_date_label_text(self):
-        self._current_month_name = self.set_text_full_date()
+        # 定义英文星期缩写到中文的映射表
+        weekday_en_to_zh = {
+            "Mon": "周一",
+            "Tue": "周二",
+            "Wed": "周三",
+            "Thu": "周四",
+            "Fri": "周五",
+            "Sat": "周六",
+            "Sun": "周日",
+        }
+        date = self.set_text_full_date()
+        # 使用映射表将英文缩写转换为中文
+        weekday_en, _, rest = date.partition(',')
+        self._current_month_name = weekday_en_to_zh.get(weekday_en, weekday_en)+" "+ rest
+        print(self._current_month_name)
+        
+        """
         self._current_full_month_name = (
             f'{datetime.date(1, self.month, 1).strftime("%B")} {self.year}'
+        )
+        """
+        self._current_full_month_name = (
+            f'{self.year} {self.month}'
         )
 
 
