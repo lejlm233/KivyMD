@@ -285,6 +285,13 @@ and get your logo on our Readme with a link to your website.
 
 <a href="https://opencollective.com/peter-surda?requireActive=false" target="_blank"><img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/gold-sponsor-1.png?requireActive=false"></a>
 
+<a href="https://route4me.com" target="_blank" style="display: inline-block; text-align: center;">
+    <div style="text-align: center;">
+        <img width="280" src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/route4me.png" alt="Best Route Planner"><br>
+        Best Route Planner - Route Optimization Software
+    </div>
+</a>
+
 #### Backers
 
 [Become a Backer](https://opencollective.com/kivymd/contribute/backer-16159) if you want to help develop this project.
