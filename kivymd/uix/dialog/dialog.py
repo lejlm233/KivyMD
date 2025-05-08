@@ -499,23 +499,27 @@ class MDDialog(MDCard, MotionDialogBehavior):
     _scrim = ObjectProperty()  # kivymd.uix.dialog.dialog.MDDialogScrim object
     _is_open = False  # is the dialog currently open or closed.
 
+    __events__ = ("on_open", "on_pre_open", "on_dismiss", "on_pre_dismiss")
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.register_event_type("on_open")
-        self.register_event_type("on_pre_open")
-        self.register_event_type("on_dismiss")
-        self.register_event_type("on_pre_dismiss")
         self.opacity = 0
+        self.update_width()
         Window.bind(on_resize=self.update_width)
 
     def update_width(self, *args) -> None:
-        self.size_hint_max_x = max(
-            self.width_offset,
-            min(
-                dp(560) if DEVICE_TYPE != "mobile" else dp(280),
-                Window.width - self.width_offset,
-            ),
-        )
+        """Fired when the application window is resized."""
+
+        side_padding = dp(24)
+        ideal_width = dp(560)
+        min_width = dp(240)
+        max_width = Window.width - side_padding * 2
+
+        if max_width < min_width:
+            self.width = min_width
+            return
+
+        self.width = min(ideal_width, max_width)
 
     def add_widget(self, widget, *args, **kwargs):
         if isinstance(widget, MDDialogIcon):
@@ -530,6 +534,9 @@ class MDDialog(MDCard, MotionDialogBehavior):
             self.ids.button_container.add_widget(widget)
         else:
             return super().add_widget(widget)
+
+    def set_properties_widget(self) -> None:
+        """Fired `on_release/on_press/on_enter/on_leave` events."""
 
     def open(self) -> None:
         """Show the dialog."""

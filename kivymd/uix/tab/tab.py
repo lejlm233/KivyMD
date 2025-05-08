@@ -943,10 +943,10 @@ class MDTabsPrimary(DeclarativeBehavior, ThemableBehavior, BoxLayout):
     _current_related_content = None  # Carousel slide (related content) object
     _do_releasing = True
 
+    __events__ = ("on_tab_switch", "on_slide_progress")
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.register_event_type("on_tab_switch")
-        self.register_event_type("on_slide_progress")
         Clock.schedule_once(self._check_panel_height)
         Clock.schedule_once(self._set_slides_attributes)
 
@@ -1077,9 +1077,11 @@ class MDTabsPrimary(DeclarativeBehavior, ThemableBehavior, BoxLayout):
                         instance.x
                         + (instance.width / 2 - tab_text_width / 2)
                         + dp(4),
-                        self.indicator.pos[1]
-                        if not self._tabs_carousel
-                        else self._tabs_carousel.height,
+                        (
+                            self.indicator.pos[1]
+                            if not self._tabs_carousel
+                            else self._tabs_carousel.height
+                        ),
                     )
                     indicator_size = (
                         tab_text_width - dp(8),
@@ -1126,17 +1128,21 @@ class MDTabsPrimary(DeclarativeBehavior, ThemableBehavior, BoxLayout):
                     if isinstance(widget_item, MDTabsItemText):
                         widget_item._active = widget.active
                         Animation(
-                            text_color=self.theme_cls.primaryColor
-                            if widget.active
-                            else self.theme_cls.onSurfaceVariantColor,
+                            text_color=(
+                                self.theme_cls.primaryColor
+                                if widget.active
+                                else self.theme_cls.onSurfaceVariantColor
+                            ),
                             d=0.2,
                         ).start(widget_item)
                     if isinstance(widget_item, MDTabsItemIcon):
                         widget_item._active = widget.active
                         Animation(
-                            icon_color=self.theme_cls.primaryColor
-                            if widget.active
-                            else self.theme_cls.onSurfaceVariantColor,
+                            icon_color=(
+                                self.theme_cls.primaryColor
+                                if widget.active
+                                else self.theme_cls.onSurfaceVariantColor
+                            ),
                             d=0.2,
                         ).start(widget_item)
             else:
@@ -1251,9 +1257,11 @@ class MDTabsPrimary(DeclarativeBehavior, ThemableBehavior, BoxLayout):
                         for w in child.children:
                             if get_match(
                                 w,
-                                MDTabsItemText
-                                if by_attr == "text"
-                                else MDTabsItemIcon,
+                                (
+                                    MDTabsItemText
+                                    if by_attr == "text"
+                                    else MDTabsItemIcon
+                                ),
                                 attr,
                                 by_attr,
                             ):
@@ -1262,9 +1270,11 @@ class MDTabsPrimary(DeclarativeBehavior, ThemableBehavior, BoxLayout):
                     else:
                         if get_match(
                             child,
-                            MDTabsItemText
-                            if by_attr == "text"
-                            else MDTabsItemIcon,
+                            (
+                                MDTabsItemText
+                                if by_attr == "text"
+                                else MDTabsItemIcon
+                            ),
                             attr,
                             by_attr,
                         ):
@@ -1299,18 +1309,22 @@ class MDTabsPrimary(DeclarativeBehavior, ThemableBehavior, BoxLayout):
                         for w in child.children:
                             if isinstance(
                                 w,
-                                MDTabsItemText
-                                if get_type == "text"
-                                else MDTabsItemIcon,
+                                (
+                                    MDTabsItemText
+                                    if get_type == "text"
+                                    else MDTabsItemIcon
+                                ),
                             ):
                                 item_text_object = w
                                 break
                     else:
                         if isinstance(
                             child,
-                            MDTabsItemText
-                            if get_type == "text"
-                            else MDTabsItemIcon,
+                            (
+                                MDTabsItemText
+                                if get_type == "text"
+                                else MDTabsItemIcon
+                            ),
                         ):
                             item_text_object = child
                             break

@@ -145,9 +145,13 @@ Example of assist
 
         # Chip attribute.
         type: "assist"
+        theme_bg_color: "Custom"
         md_bg_color: "#2a3127"
+        theme_line_color: "Custom"
         line_color: "grey"
-        elevation: 1
+        theme_elevation_level: "Custom"
+        elevation_level: 1
+        theme_shadow_softness: "Custom"
         shadow_softness: 2
 
         MDChipLeadingIcon:
@@ -178,12 +182,14 @@ Example of assist
 
             CommonLabel:
                 text: "Therapy with Thea"
-                font_style: "H3"
+                font_style: "Display"
+                role: "large"
                 padding_y: "12dp"
 
             CommonLabel:
                 text: "Video call"
-                font_style: "H5"
+                font_style: "Display"
+                role: "small"
                 pos_hint: {"center_x": .5}
 
             MDBoxLayout:
@@ -316,6 +322,7 @@ Example of filtering
                             text=tag,
                         ),
                         type="filter",
+                        theme_bg_color="Custom",
                         md_bg_color="#303A29",
                     )
                     chip.bind(active=lambda x, y, z=tag: self.set_filter(y, z))
@@ -426,6 +433,7 @@ Tap a chip to select it. Multiple chips can be selected or unselected:
                             text=tag,
                         ),
                         type="filter",
+                        theme_bg_color="Custom",
                         md_bg_color="#303A29",
                         active=True,
                     )
@@ -505,6 +513,7 @@ menus:
                         text=tag,
                     ),
                     type="filter",
+                    theme_bg_color="Custom",
                     md_bg_color="#303A29",
 
                 )
@@ -528,7 +537,7 @@ menus:
 
         def build(self) -> ChipScreen:
             self.theme_cls.theme_style = "Dark"
-            self.theme_cls.primary_palette = "LightGreen"
+            self.theme_cls.primary_palette = "Lightgreen"
             return self.screen
 
         def on_start(self) -> None:
@@ -570,7 +579,7 @@ Example of input
             pos_hint: {"center_x": .5, "center_y": .5}
             type: "input"
             line_color: "grey"
-            _no_ripple_effect: True
+            ripple_effect: False
 
             MDChipLeadingAvatar:
                 source: "data/logo/kivy-icon-128.png"
@@ -685,6 +694,7 @@ API break
 
         MDChip:
             pos_hint: {"center_x": .5, "center_y": .5}
+            theme_line_color: "Custom"
             line_color: "grey"
             on_release: app.on_release_chip(self)
 
@@ -982,51 +992,63 @@ class MDChip(
 
             self.padding = {
                 "input": (
-                    "12dp"
-                    if not self.ids.leading_icon_container.children
-                    else (
-                        "5dp"
-                        if not self.ids.leading_icon_container.children[
-                            0
-                        ].source
-                        else "16dp"
+                    (
+                        "12dp"
+                        if not self.ids.leading_icon_container.children
+                        else (
+                            "5dp"
+                            if not self.ids.leading_icon_container.children[
+                                0
+                            ].source
+                            else "16dp"
+                        )
                     ),
                     0,
                     "4dp",
                     0,
                 ),
                 "assist": (
-                    "16dp"
-                    if not self.ids.leading_icon_container.children
-                    else "8dp",
+                    (
+                        "16dp"
+                        if not self.ids.leading_icon_container.children
+                        else "8dp"
+                    ),
                     0,
-                    "16dp"
-                    if not self.ids.leading_icon_container.children
-                    else "8dp",
+                    (
+                        "16dp"
+                        if not self.ids.leading_icon_container.children
+                        else "8dp"
+                    ),
                     0,
                 ),
                 "suggestion": (
-                    "16dp"
-                    if not self.ids.leading_icon_container.children
-                    else "8dp",
+                    (
+                        "16dp"
+                        if not self.ids.leading_icon_container.children
+                        else "8dp"
+                    ),
                     0,
                     "16dp",
                     0,
                 ),
                 "filter": (
-                    "16dp"
-                    if not self.ids.leading_icon_container.children
-                    else (
-                        "8dp"
-                        if not self.ids.leading_icon_container.children[
-                            0
-                        ].source
-                        else "4dp"
+                    (
+                        "16dp"
+                        if not self.ids.leading_icon_container.children
+                        else (
+                            "8dp"
+                            if not self.ids.leading_icon_container.children[
+                                0
+                            ].source
+                            else "4dp"
+                        )
                     ),
                     0,
-                    "16dp"
-                    if not self.ids.trailing_icon_container.children
-                    else "8dp",
+                    (
+                        "16dp"
+                        if not self.ids.trailing_icon_container.children
+                        else "8dp"
+                    ),
                     0,
                 ),
             }[value]
@@ -1051,14 +1073,16 @@ class MDChip(
             self.set_chip_bg_color(
                 self.selected_color
                 if self.selected_color
-                else {
-                    "filter": self.theme_cls.surfaceContainerLowColor,
-                    "suggestion": self.theme_cls.surfaceContainerLowColor,
-                    "input": self.theme_cls.surfaceContainerLowColor,
-                    "assist": self.theme_cls.surfaceContainerLowColor,
-                }[self.type]
-                if self.theme_bg_color == "Primary"
-                else self.md_bg_color
+                else (
+                    {
+                        "filter": self.theme_cls.surfaceContainerLowColor,
+                        "suggestion": self.theme_cls.surfaceContainerLowColor,
+                        "input": self.theme_cls.surfaceContainerLowColor,
+                        "assist": self.theme_cls.surfaceContainerLowColor,
+                    }[self.type]
+                    if self.theme_bg_color == "Primary"
+                    else self.md_bg_color
+                )
             )
         else:
             if (

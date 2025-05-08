@@ -1007,10 +1007,10 @@ class MDBottomAppBar(
     _fab_bottom_app_bar_button = None
     _action_overflow_button = None
 
+    __events__ = ("on_show_bar", "on_hide_bar")
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.register_event_type("on_show_bar")
-        self.register_event_type("on_hide_bar")
 
     def button_centering_animation(
         self,
@@ -1171,7 +1171,9 @@ class MDBottomAppBar(
         """Fired when the root screen is resized."""
 
         if self._fab_bottom_app_bar_button:
-            self._fab_bottom_app_bar_button.x = Window.width - (dp(56) + dp(16))
+            self._fab_bottom_app_bar_button.x = self.parent.width - (
+                dp(56) + dp(16)
+            )
 
     def on_action_items(self, instance, value: list) -> None:
         """

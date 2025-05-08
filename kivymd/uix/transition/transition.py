@@ -366,7 +366,7 @@ class MDSharedAxisTransition(MDTransitionBase):
     )
     """ 
     Custom material design animation transition.
-    
+
     :attr:`switch_animation` is a :class:`~kivy.properties.OptionProperty` and
     defaults to `"easing_decelerated"`.
     """
@@ -374,7 +374,7 @@ class MDSharedAxisTransition(MDTransitionBase):
     slide_distance = NumericProperty(dp(15))
     """
     Distance to which it slides left, right, bottom or up depending on axis.
-    
+
     :attr:`slide_distance` is a :class:`~kivy.properties.NumericProperty` and
     defaults to `dp(15)`.
     """
@@ -442,7 +442,9 @@ class MDSharedAxisTransition(MDTransitionBase):
 
     def on_progress(self, progress):
         # This code could be simplyfied with setattr, but it's slow
-        progress = getattr(MDAnimationTransition, self.switch_animation)(progress)
+        progress = getattr(MDAnimationTransition, self.switch_animation)(
+            progress
+        )
         progress_i = progress - 1
         progress_d = progress * 2
         # First half.

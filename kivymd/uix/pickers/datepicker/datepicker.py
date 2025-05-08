@@ -744,6 +744,16 @@ class MDBaseDatePicker(ThemableBehavior, MotionDatePickerBehavior, BoxLayout):
     _select_year_dialog_open = False
     _date_label_text = StringProperty()
 
+    __events__ = (
+        "on_select_day",
+        "on_select_month",
+        "on_select_year",
+        "on_cancel",
+        "on_ok",
+        "on_edit",
+        "on_dismiss",
+    )
+
     def __init__(
         self,
         year=None,
@@ -761,13 +771,6 @@ class MDBaseDatePicker(ThemableBehavior, MotionDatePickerBehavior, BoxLayout):
         self.year = self.sel_year
         self.day = self.sel_day
         super().__init__(**kwargs)
-        self.register_event_type("on_select_day")
-        self.register_event_type("on_select_month")
-        self.register_event_type("on_select_year")
-        self.register_event_type("on_cancel")
-        self.register_event_type("on_ok")
-        self.register_event_type("on_edit")
-        self.register_event_type("on_dismiss")
         self.opacity = 0
 
         if self.max_date and self.min_date:
@@ -1181,10 +1184,10 @@ class MDDockedDatePickerBaseSelectionContainer(BoxLayout):
     and defaults to `None`.
     """
 
+    __events__ = ("on_release", "on_open_menu")
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.register_event_type("on_release")
-        self.register_event_type("on_open_menu")
 
     def on_open_menu(self, *args) -> None:
         """Fired when the 'menu-right' button are pressed."""
@@ -1689,10 +1692,10 @@ class MDModalDatePickerYearSelectionItem(ScaleBehavior, BoxLayout):
     and defaults to `None`.
     """
 
+    __events__ = ("on_release", "on_open_menu")
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.register_event_type("on_release")
-        self.register_event_type("on_open_menu")
 
     def on_open_menu(self, *args) -> None:
         """Fired when the 'menu-right' button are pressed."""
@@ -1826,11 +1829,9 @@ class MDModalInputDatePicker(CommonElevationBehavior, MDBaseDatePicker):
         super().__init__(*args, **kwargs)
         Clock.schedule_once(self._check_range, 0.1)
 
-    def generate_list_widgets_days(self) -> None:
-        ...
+    def generate_list_widgets_days(self) -> None: ...
 
-    def update_calendar(self, *args) -> None:
-        ...
+    def update_calendar(self, *args) -> None: ...
 
     def set_input_date(self, input_date: str) -> None:
         split_date = [d for d in input_date.split("/") if d]
@@ -1925,11 +1926,13 @@ class MDModalInputDatePicker(CommonElevationBehavior, MDBaseDatePicker):
                 id="fffffff",
                 date_picker=self,
                 date_format=self.date_format,
-                text=self.max_date.strftime(
-                    self._date_format_strftime[self.date_format]
-                )
-                if self.max_date
-                else "",
+                text=(
+                    self.max_date.strftime(
+                        self._date_format_strftime[self.date_format]
+                    )
+                    if self.max_date
+                    else ""
+                ),
             )
             input_date_container.add_widget(field_end)
 
