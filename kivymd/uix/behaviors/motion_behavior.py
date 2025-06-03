@@ -146,6 +146,18 @@ class MotionDropDownMenuBehavior(MotionBase):
         anim.start(self)
 
     def on_open(self, *args):
+        if self.show_duration == 0:
+            self._scale_y=1
+            self._scale_x=1
+            self._opacity=0
+            anim = Animation(
+            _opacity=1,
+            duration=0.3,
+            transition="out_quad",
+            )
+            anim.start(self)
+            return
+        
         anim = Animation(
             _scale_y=1,
             # _opacity=1,
