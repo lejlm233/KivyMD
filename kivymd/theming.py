@@ -23,13 +23,12 @@ has the :attr:`~kivymd.app.MDApp.theme_cls` attribute, with which you control
 the material properties of your application.
 """
 
-import os.path
-from timeit import default_timer
 
+from kivy import platform
 from kivy.app import App
-from kivy.logger import Logger
 from kivy.core.window import Window
 from kivy.event import EventDispatcher
+from kivy.logger import Logger
 from kivy.properties import (
     AliasProperty,
     BooleanProperty,
@@ -37,22 +36,20 @@ from kivy.properties import (
     NumericProperty,
     ObjectProperty,
     OptionProperty,
-    StringProperty, ListProperty,
+    StringProperty
 )
-from kivy import platform
-from kivy.utils import get_color_from_hex, rgba, hex_colormap
+from kivy.utils import get_color_from_hex, hex_colormap, rgba
+from materialyoucolor.dislike.dislike_analyzer import DislikeAnalyzer
+from materialyoucolor.dynamiccolor.material_dynamic_colors import (
+    MaterialDynamicColors,
+)
+from materialyoucolor.hct import Hct
+from materialyoucolor.utils.color_utils import argb_from_rgba_01
+from materialyoucolor.utils.platform_utils import SCHEMES, get_dynamic_scheme
 
 from kivymd.dynamic_color import DynamicColor
 from kivymd.font_definitions import theme_font_styles
 from kivymd.material_resources import DEVICE_IOS
-
-from materialyoucolor.utils.color_utils import argb_from_rgba_01
-from materialyoucolor.dynamiccolor.material_dynamic_colors import (
-    MaterialDynamicColors,
-)
-from materialyoucolor.utils.platform_utils import SCHEMES, get_dynamic_scheme
-from materialyoucolor.hct import Hct
-from materialyoucolor.dislike.dislike_analyzer import DislikeAnalyzer
 
 
 class ThemeManager(EventDispatcher, DynamicColor):
@@ -146,7 +143,7 @@ class ThemeManager(EventDispatcher, DynamicColor):
 
     dynamic_color_quality = NumericProperty(1 if platform == "android" else 10)
     """
-    The quality of the generated color scheme from the system wallpaper. 
+    The quality of the generated color scheme from the system wallpaper.
     It is equal to or higher than `1`, with `1` representing the maximum quality.
 
     .. warning::
@@ -165,7 +162,7 @@ class ThemeManager(EventDispatcher, DynamicColor):
     .. versionadded:: 2.0.0
 
     .. seealso::
-    
+
         `Material Design spec, Dynamic color <https://m3.material.io/styles/color/dynamic-color/overview>`_
 
     To build the color scheme of your application from user wallpapers, you
@@ -173,66 +170,133 @@ class ThemeManager(EventDispatcher, DynamicColor):
     <https://github.com/Android-for-Python/Android-for-Python-Users?tab=readme-ov-file#storage-permissions>`_
     permission if your android version is below 8.1:
 
-    .. code-block:: python
+    .. tabs::
 
-        from kivy import platform
-        from kivy.lang import Builder
-        from kivy.clock import Clock
+        .. tab:: Imperative python style with KV
 
-        from kivymd.app import MDApp
+            .. code-block:: python
 
-        KV = '''
-        MDScreen:
-            md_bg_color: app.theme_cls.surfaceColor
+                from kivy import platform
+                from kivy.lang import Builder
+                from kivy.clock import Clock
 
-            MDButton:
-                style: "elevated"
-                pos_hint: {"center_x": .5, "center_y": .5}
+                from kivymd.app import MDApp
 
-                MDButtonIcon:
-                    icon: "plus"
+                KV = '''
+                MDScreen:
+                    md_bg_color: app.theme_cls.surfaceColor
 
-                MDButtonText:
-                    text: "Elevated"
-        '''
-
-
-        class Example(MDApp):
-            def build(self):
-                return Builder.load_string(KV)
-
-            def on_resume(self, *args):
-                '''Updating the color scheme when the application resumes.'''
-
-                self.theme_cls.set_colors()
-
-            def set_dynamic_color(self, *args) -> None:
-                '''
-                When sets the `dynamic_color` value, the self method will be
-                `called.theme_cls.set_colors()` which will generate a color
-                scheme from a custom wallpaper if `dynamic_color` is `True`.
+                    MDButton:
+                        style: "elevated"
+                        pos_hint: {"center_x": .5, "center_y": .5}
+        
+                        MDButtonIcon:
+                            icon: "plus"
+        
+                        MDButtonText:
+                            text: "Elevated"
                 '''
 
-                self.theme_cls.dynamic_color = True
 
-            def on_start(self) -> None:
-                '''
-                It is fired at the start of the application and requests the
-                necessary permissions.
-                '''
+                class Example(MDApp):
+                    def build(self):
+                        return Builder.load_string(KV)
 
-                def callback(permission, results):
-                    if all([res for res in results]):
-                        Clock.schedule_once(self.set_dynamic_color)
+                    def on_resume(self, *args):
+                        '''Updating the color scheme when the application resumes.'''
 
-                if platform == "android":
-                    from android.permissions import Permission, request_permissions
+                        self.theme_cls.set_colors()
 
-                    permissions = [Permission.READ_EXTERNAL_STORAGE]
-                    request_permissions(permissions, callback)
+                    def set_dynamic_color(self, *args) -> None:
+                        '''
+                        When sets the `dynamic_color` value, the self method will be
+                        `called.theme_cls.set_colors()` which will generate a color
+                        scheme from a custom wallpaper if `dynamic_color` is `True`.
+                        '''
+
+                        self.theme_cls.dynamic_color = True
+
+                    def on_start(self) -> None:
+                        '''
+                        It is fired at the start of the application and requests the
+                        necessary permissions.
+                        '''
+
+                        def callback(permission, results):
+                            if all([res for res in results]):
+                                Clock.schedule_once(self.set_dynamic_color)
+
+                        if platform == "android":
+                            from android.permissions import Permission, request_permissions
+
+                            permissions = [Permission.READ_EXTERNAL_STORAGE]
+                            request_permissions(permissions, callback)
 
 
-        Example().run()
+                Example().run()
+
+        .. tab:: Declarative python style
+
+            .. code-block:: python
+
+                from kivy import platform
+                from kivy.clock import Clock
+
+                from kivymd.app import MDApp
+                from kivymd.uix.button import MDButton, MDButtonIcon, MDButtonText
+                from kivymd.uix.screen import MDScreen
+
+
+                class Example(MDApp):
+                    def build(self):
+                        return (
+                            MDScreen(
+                                MDButton(
+                                    MDButtonIcon(
+                                        icon="plus",
+                                    ),
+                                    MDButtonText(
+                                        text="Elevated",
+                                    ),
+                                    style="elevated",
+                                    pos_hint={"center_x": .5, "center_y": .5},
+                                ),
+                                md_bg_color=self.theme_cls.surfaceColor,
+                            )
+                        )
+
+                    def on_resume(self, *args):
+                        '''Updating the color scheme when the application resumes.'''
+
+                        self.theme_cls.set_colors()
+
+                    def set_dynamic_color(self, *args) -> None:
+                        '''
+                        When sets the `dynamic_color` value, the self method will be
+                        `called.theme_cls.set_colors()` which will generate a color
+                        scheme from a custom wallpaper if `dynamic_color` is `True`.
+                        '''
+
+                        self.theme_cls.dynamic_color = True
+
+                    def on_start(self) -> None:
+                        '''
+                        It is fired at the start of the application and requests the
+                        necessary permissions.
+                        '''
+
+                        def callback(permission, results):
+                            if all([res for res in results]):
+                                Clock.schedule_once(self.set_dynamic_color)
+
+                        if platform == "android":
+                            from android.permissions import Permission, request_permissions
+
+                            permissions = [Permission.READ_EXTERNAL_STORAGE]
+                            request_permissions(permissions, callback)
+
+
+                Example().run()
 
     :attr:`dynamic_color` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
@@ -534,7 +598,7 @@ class ThemeManager(EventDispatcher, DynamicColor):
                 KV = '''
                 MDScreen:
                     md_bg_color: self.theme_cls.backgroundColor
-                
+
                     MDLabel:
                         text: "MDLabel"
                         halign: "center"
@@ -743,17 +807,23 @@ class ThemeManager(EventDispatcher, DynamicColor):
                 self._set_application_scheme()
 
     def update_theme_colors(self, *args) -> None:
-        """Fired when the `theme_style` value changes."""
+        """Fired when the :attr:`theme_style` value changes."""
 
         self.set_colors()
 
-    def on_dynamic_scheme_name(self, *args):
+    def on_dynamic_scheme_name(self, *args) -> None:
+        """Fired when the :attr:`dynamic_scheme_name` value changes."""
+
         self.set_colors()
 
-    def on_dynamic_scheme_contrast(self, *args):
+    def on_dynamic_scheme_contrast(self, *args) -> None:
+        """Fired when the :attr:`dynamic_scheme_contrast` value changes."""
+
         self.set_colors()
 
-    def on_path_to_wallpaper(self, *args):
+    def on_path_to_wallpaper(self, *args) -> None:
+        """Fired when the :attr:`path_to_wallpaper` value changes."""
+
         self.set_colors()
 
     def switch_theme(self) -> None:
